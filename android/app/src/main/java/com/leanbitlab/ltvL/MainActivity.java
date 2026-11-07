@@ -20,7 +20,6 @@ package com.omeda.arc;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.content.pm.PackageManager;
 import android.content.pm.*;
 import android.graphics.Bitmap;
@@ -79,7 +78,7 @@ public class MainActivity extends FlutterActivity {
     private final String NETWORK_EVENT_CHANNEL = "me.efesser.flauncher/event_network";
     private final String HOME_CHANNEL = "me.efesser.flauncher/home";
     private MethodChannel homeChannel;
-    private long startedAt = 0;
+    private boolean stopped = false;
     private static final String PERMISSION_READ_TV_LISTINGS = "android.permission.READ_TV_LISTINGS";
     private static final int REQUEST_CODE_READ_TV_LISTINGS = 1001;
     private static final String COLUMN_ASPECT_RATIO = "aspect_ratio";
@@ -209,15 +208,21 @@ public class MainActivity extends FlutterActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        startedAt = SystemClock.uptimeMillis();
+        stopped = false;
+    }
+
+    @Override
+    protected void onStop() {
+        stopped = true;
+        super.onStop();
     }
 
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
-        // Home while another app is in front restarts the launcher just before this call; Home while the
-        // launcher has been showing for a while is reported to Flutter instead. (The system may pause the
-        // activity to deliver the intent, so the resumed state can't tell these apart.)
-        boolean wasOnScreen = SystemClock.uptimeMillis() - startedAt > 1000;
+        // Home while the launcher is showing is reported to Flutter; Home from another app just returns here.
+        // The launcher then has no window focus and may not be restarted yet, and it may be paused either way
+        // to receive the intent, so neither the resumed state nor the time since onStart can tell these apart.
+        boolean wasOnScreen = !stopped && hasWindowFocus();
         super.onNewIntent(intent);
         if (wasOnScreen && homeChannel != null
                 && Intent.ACTION_MAIN.equals(intent.getAction())
