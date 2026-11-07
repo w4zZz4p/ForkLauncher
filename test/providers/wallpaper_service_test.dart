@@ -48,6 +48,10 @@ MockSettingsService _createSettingsService({
   when(s.unsplashSlideshowEnabled).thenReturn(unsplashSlideshowEnabled);
   when(s.unsplashIntervalMinutes).thenReturn(unsplashIntervalMinutes);
   when(s.redditWallpaperEnabled).thenReturn(redditWallpaperEnabled);
+  when(s.localSlideshowEnabled).thenReturn(false);
+  when(s.localSlideshowIntervalMinutes).thenReturn(10);
+  when(s.localSlideshowFolder).thenReturn('');
+  when(s.localSlideshowCurrent).thenReturn(null);
   when(s.redditIntervalMinutes).thenReturn(redditIntervalMinutes);
   when(s.redditSubreddits).thenReturn(redditSubreddits);
   when(s.redditSort).thenReturn(redditSort);

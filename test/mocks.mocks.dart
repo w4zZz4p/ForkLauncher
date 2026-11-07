@@ -356,6 +356,16 @@ class _FakeImageStreamCompleter_27 extends _i1.SmartFake
 /// See the documentation for Mockito's code generation for more information.
 class MockFLauncherChannel extends _i1.Mock implements _i12.FLauncherChannel {
   @override
+  void setHomePressedHandler(_i4.VoidCallback? onHomePressed) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #setHomePressedHandler,
+          [onHomePressed],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
   _i9.Future<List<Map<dynamic, dynamic>>> getApplications() =>
       (super.noSuchMethod(
         Invocation.method(
@@ -569,6 +579,16 @@ class MockFLauncherChannel extends _i1.Mock implements _i12.FLauncherChannel {
       ) as _i9.Future<bool>);
 
   @override
+  _i9.Future<bool> areMediaPermissionsAvailable() => (super.noSuchMethod(
+        Invocation.method(
+          #areMediaPermissionsAvailable,
+          [],
+        ),
+        returnValue: _i9.Future<bool>.value(false),
+        returnValueForMissingStub: _i9.Future<bool>.value(false),
+      ) as _i9.Future<bool>);
+
+  @override
   _i9.Future<void> requestMediaPermissions() => (super.noSuchMethod(
         Invocation.method(
           #requestMediaPermissions,
@@ -772,6 +792,27 @@ class MockWallpaperService extends _i1.Mock implements _i14.WallpaperService {
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  _i9.Future<Map<String, int>> localImageFolders() => (super.noSuchMethod(
+        Invocation.method(
+          #localImageFolders,
+          [],
+        ),
+        returnValue: _i9.Future<Map<String, int>>.value(<String, int>{}),
+        returnValueForMissingStub:
+            _i9.Future<Map<String, int>>.value(<String, int>{}),
+      ) as _i9.Future<Map<String, int>>);
+
+  @override
+  _i9.Future<void> advanceLocalSlideshow() => (super.noSuchMethod(
+        Invocation.method(
+          #advanceLocalSlideshow,
+          [],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
 
   @override
   _i9.Future<void> advanceRedditWallpaper() => (super.noSuchMethod(
@@ -1434,6 +1475,17 @@ class MockAppsService extends _i1.Mock implements _i16.AppsService {
       ) as _i9.Future<void>);
 
   @override
+  _i9.Future<void> deleteCategory(_i3.Category? category) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteCategory,
+          [category],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
   void moveSectionInMemory(
     int? oldIndex,
     int? newIndex,
@@ -1477,6 +1529,23 @@ class MockAppsService extends _i1.Mock implements _i16.AppsService {
       ) as _i9.Future<void>);
 
   @override
+  _i9.Future<void> moveCategory(
+    int? oldIndex,
+    int? newIndex,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #moveCategory,
+          [
+            oldIndex,
+            newIndex,
+          ],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
   _i9.Future<void> hideApplication(_i17.App? application) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -1492,6 +1561,17 @@ class MockAppsService extends _i1.Mock implements _i16.AppsService {
       (super.noSuchMethod(
         Invocation.method(
           #showApplication,
+          [application],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
+  _i9.Future<void> unHideApplication(_i17.App? application) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #unHideApplication,
           [application],
         ),
         returnValue: _i9.Future<void>.value(),
@@ -1892,6 +1972,40 @@ class MockSettingsService extends _i1.Mock implements _i18.SettingsService {
         returnValue: false,
         returnValueForMissingStub: false,
       ) as bool);
+
+  @override
+  bool get localSlideshowEnabled => (super.noSuchMethod(
+        Invocation.getter(#localSlideshowEnabled),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  String get localSlideshowFolder => (super.noSuchMethod(
+        Invocation.getter(#localSlideshowFolder),
+        returnValue: _i19.dummyValue<String>(
+          this,
+          Invocation.getter(#localSlideshowFolder),
+        ),
+        returnValueForMissingStub: _i19.dummyValue<String>(
+          this,
+          Invocation.getter(#localSlideshowFolder),
+        ),
+      ) as String);
+
+  @override
+  int get localSlideshowIntervalMinutes => (super.noSuchMethod(
+        Invocation.getter(#localSlideshowIntervalMinutes),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+
+  @override
+  int get localSlideshowChangedAt => (super.noSuchMethod(
+        Invocation.getter(#localSlideshowChangedAt),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
 
   @override
   int get redditIntervalMinutes => (super.noSuchMethod(
@@ -2355,6 +2469,50 @@ class MockSettingsService extends _i1.Mock implements _i18.SettingsService {
         Invocation.method(
           #setRedditWallpaperEnabled,
           [enabled],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
+  _i9.Future<void> setLocalSlideshowEnabled(bool? enabled) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setLocalSlideshowEnabled,
+          [enabled],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
+  _i9.Future<void> setLocalSlideshowFolder(String? folder) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setLocalSlideshowFolder,
+          [folder],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
+  _i9.Future<void> setLocalSlideshowIntervalMinutes(int? minutes) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setLocalSlideshowIntervalMinutes,
+          [minutes],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
+  _i9.Future<void> setLocalSlideshowCurrent(String? path) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setLocalSlideshowCurrent,
+          [path],
         ),
         returnValue: _i9.Future<void>.value(),
         returnValueForMissingStub: _i9.Future<void>.value(),
