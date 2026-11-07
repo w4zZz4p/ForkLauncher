@@ -346,19 +346,19 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get localSlideshow => 'Folder slideshow';
+  String get localSlideshow => 'Klasör slayt gösterisi';
 
   @override
-  String get localSlideshowEnable => 'Show photos from a folder';
+  String get localSlideshowEnable => 'Bir klasördeki fotoğrafları göster';
 
   @override
-  String get localSlideshowFolder => 'Folder';
+  String get localSlideshowFolder => 'Klasör';
 
   @override
-  String get localSlideshowNoImages => 'No folders with pictures found';
+  String get localSlideshowNoImages => 'Resim içeren klasör bulunamadı';
 
   @override
-  String get localSlideshowNext => 'Next photo now';
+  String get localSlideshowNext => 'Şimdi sonraki fotoğraf';
 
   @override
   String get slideshowCategories => 'Kategoriler';

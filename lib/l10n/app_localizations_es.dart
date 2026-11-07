@@ -349,19 +349,20 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get localSlideshow => 'Folder slideshow';
+  String get localSlideshow => 'Presentación de carpeta';
 
   @override
-  String get localSlideshowEnable => 'Show photos from a folder';
+  String get localSlideshowEnable => 'Mostrar fotos de una carpeta';
 
   @override
-  String get localSlideshowFolder => 'Folder';
+  String get localSlideshowFolder => 'Carpeta';
 
   @override
-  String get localSlideshowNoImages => 'No folders with pictures found';
+  String get localSlideshowNoImages =>
+      'No se encontraron carpetas con imágenes';
 
   @override
-  String get localSlideshowNext => 'Next photo now';
+  String get localSlideshowNext => 'Siguiente foto ahora';
 
   @override
   String get slideshowCategories => 'Categorías';

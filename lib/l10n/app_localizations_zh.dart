@@ -340,19 +340,19 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get localSlideshow => 'Folder slideshow';
+  String get localSlideshow => '文件夹幻灯片';
 
   @override
-  String get localSlideshowEnable => 'Show photos from a folder';
+  String get localSlideshowEnable => '显示文件夹中的照片';
 
   @override
-  String get localSlideshowFolder => 'Folder';
+  String get localSlideshowFolder => '文件夹';
 
   @override
-  String get localSlideshowNoImages => 'No folders with pictures found';
+  String get localSlideshowNoImages => '未找到包含图片的文件夹';
 
   @override
-  String get localSlideshowNext => 'Next photo now';
+  String get localSlideshowNext => '立即显示下一张';
 
   @override
   String get slideshowCategories => '分类';

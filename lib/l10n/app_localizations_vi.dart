@@ -346,19 +346,19 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get localSlideshow => 'Folder slideshow';
+  String get localSlideshow => 'Trình chiếu thư mục';
 
   @override
-  String get localSlideshowEnable => 'Show photos from a folder';
+  String get localSlideshowEnable => 'Hiện ảnh từ thư mục';
 
   @override
-  String get localSlideshowFolder => 'Folder';
+  String get localSlideshowFolder => 'Thư mục';
 
   @override
-  String get localSlideshowNoImages => 'No folders with pictures found';
+  String get localSlideshowNoImages => 'Không tìm thấy thư mục có ảnh';
 
   @override
-  String get localSlideshowNext => 'Next photo now';
+  String get localSlideshowNext => 'Chuyển sang ảnh tiếp theo';
 
   @override
   String get slideshowCategories => 'Chủ đề';
