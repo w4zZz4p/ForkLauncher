@@ -9,7 +9,7 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get aboutFlauncher => 'Arc Launcher Hakkında';
+  String get aboutFlauncher => 'ForkLauncher Hakkında';
 
   @override
   String get addCategory => 'Kategori ekle';
@@ -273,7 +273,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get updateInstallPermissionBody =>
-      'Arc Launcher\'ın bilinmeyen uygulamaları yüklemesine izin verin, ardından güncellemeyi yeniden deneyin.';
+      'ForkLauncher\'ın bilinmeyen uygulamaları yüklemesine izin verin, ardından güncellemeyi yeniden deneyin.';
 
   @override
   String get updateOpenPermissionSettingsButton => 'İzin ayarlarını aç';
@@ -284,7 +284,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String textAboutDialog(String repoUrl) {
-    return 'Arc Launcher, FLauncher tabanlı, Android TV için özelleştirilmiş açık kaynaklı bir başlatıcıdır.\n\nGeliştiren: Meddouri Badis.\nKaynak kodu $repoUrl adresinde mevcuttur.';
+    return 'ForkLauncher, Meddouri Badis\'in Arc Launcher projesi tabanlı, Android TV için özelleştirilmiş açık kaynaklı bir başlatıcıdır.\n\nKaynak kodu $repoUrl adresinde mevcuttur.';
   }
 
   @override

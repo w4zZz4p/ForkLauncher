@@ -65,6 +65,7 @@ android {
 
     defaultConfig {
         applicationId "com.omeda.arc"
+        applicationIdSuffix ".local"
         compileSdk 36
         minSdkVersion flutter.minSdkVersion
         targetSdk 35

@@ -9,7 +9,7 @@ class AppLocalizationsVi extends AppLocalizations {
   AppLocalizationsVi([String locale = 'vi']) : super(locale);
 
   @override
-  String get aboutFlauncher => 'Giới thiệu Arc Launcher';
+  String get aboutFlauncher => 'Giới thiệu ForkLauncher';
 
   @override
   String get addCategory => 'Thêm danh mục';
@@ -273,7 +273,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get updateInstallPermissionBody =>
-      'Cho phép Arc Launcher cài ứng dụng không rõ nguồn gốc, rồi thử cập nhật lại.';
+      'Cho phép ForkLauncher cài ứng dụng không rõ nguồn gốc, rồi thử cập nhật lại.';
 
   @override
   String get updateOpenPermissionSettingsButton => 'Mở cài đặt quyền';
@@ -284,7 +284,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String textAboutDialog(String repoUrl) {
-    return 'Arc Launcher là ứng dụng màn hình chính mã nguồn mở dành cho Android TV, được tùy chỉnh từ FLauncher.\n\nDo Meddouri Badis phát triển.\nMã nguồn tại $repoUrl.';
+    return 'ForkLauncher là ứng dụng màn hình chính mã nguồn mở dành cho Android TV, được tùy chỉnh từ Arc Launcher của Meddouri Badis.\n\nMã nguồn tại $repoUrl.';
   }
 
   @override

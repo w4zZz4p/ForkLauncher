@@ -1,31 +1,29 @@
-# Arc Launcher
+# ForkLauncher
 
-<picture>
-  <img alt="Arc Launcher Preview" src="docs/images/home.webp">
-</picture>
+**ForkLauncher** is a personal open-source launcher for Android TV, built as a fork of
+[Arc Launcher](https://github.com/meddouribadis/arclauncher) by [meddouribadis](https://github.com/meddouribadis).
+All credit for the launcher itself goes to Arc Launcher and the projects it is based on.
 
-[![Version](https://img.shields.io/github/v/release/meddouribadis/arclauncher?style=for-the-badge&color=7C4DFF&label=Version)](https://github.com/meddouribadis/arclauncher/releases/latest) [![Downloads](https://img.shields.io/github/downloads/meddouribadis/arclauncher/total?style=for-the-badge&color=7C4DFF&label=Downloads)](https://github.com/meddouribadis/arclauncher/releases) [![Stars](https://img.shields.io/github/stars/meddouribadis/arclauncher?style=for-the-badge&color=7C4DFF)](https://github.com/meddouribadis/arclauncher/stargazers) [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/meddouribadis) [![Ko-fi](https://img.shields.io/badge/Support-Ko--fi-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/omeda)
+## What this fork adds
 
-**Arc Launcher** is an open-source launcher for Android TV, built as a fork of [LTvLauncher](https://github.com/LeanBitLab/LtvLauncher) (originally [FLauncher](https://gitlab.com/flauncher/flauncher)).
-
-It adds a modern grid layout, customizable video and slideshow wallpapers, OLED screensaver protection, and remote-friendly navigation.
-
-[![Get it on Google Play](https://img.shields.io/badge/Get_it_on-Google_Play-414141?style=for-the-badge&logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=com.omeda.arc) [![Get it on GitHub](https://img.shields.io/badge/Get_it_on-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/meddouribadis/arclauncher/releases/latest) [![Downloader Code](https://img.shields.io/badge/Downloader_Code-6330120-FF6600?style=for-the-badge&logo=android&logoColor=white)](https://go.aftvnews.com/6330120)
+- **Folder slideshow** - Random wallpaper from a folder on the TV, changed on a timer you choose, with no internet needed (Interface > Wallpaper > Folder slideshow).
+- **Wallpaper-only view** - Press Home while already on the home screen to hide the status bar and every section. Any other key brings them back without opening an app.
+- **Clean home screen** - Sections stay below the screen edge until you press Down from the dock.
 
 ## Installation
 
-Arc Launcher is available on the Google Play Store as well as via direct APK downloads:
+There are no prebuilt releases yet, so build it from source:
 
-- **Google Play Store** — Install directly on your Android TV or Google TV from [Google Play](https://play.google.com/store/apps/details?id=com.omeda.arc).
-- **GitHub Releases** — Download the latest APK release from [GitHub Releases](https://github.com/meddouribadis/arclauncher/releases/latest).
-- **Downloader App (Fire TV & Android TV)** — Enter quick code **`6330120`** in the [Downloader app](https://go.aftvnews.com/6330120) to download and install directly on your TV.
+```shell
+$ flutter build apk --release --flavor github --target-platform android-arm
+$ adb install -r build/app/outputs/flutter-apk/app-armeabi-v7a-github-release.apk
+```
 
-### Beta Testing
+Release builds are signed through `storeFile`, `storePassword`, `keyAlias` and `keyPassword` in `android/local.properties`, which git ignores. Never commit your keystore or that file.
 
-If you'd like early access to new features and want to help test upcoming releases:
+The package name is `com.omeda.arc.local`, so it installs alongside the official Arc Launcher but cannot update it, and official updates cannot update it.
 
-1. Join the **[Arc Launcher Beta on Google Groups](https://groups.google.com/g/arc-launcher-beta/)** with your Google Play email.
-2. Enroll in the testing program via the **[Google Play testing link](https://play.google.com/apps/testing/com.omeda.arc)**.
+The features below come from Arc Launcher unless listed above.
 
 ## Features
 
@@ -52,7 +50,7 @@ If you'd like early access to new features and want to help test upcoming releas
 - **Brightness Scheduler (Experimental)** - Automatically adjust brightness based on time (requires ADB `WRITE_SETTINGS` permission).
 
 > [!NOTE]
-> Because Android's `WallpaperManager` is not available on some Android TV devices, Arc Launcher manages its own wallpapers. Changing the wallpaper requires a file explorer installed on the device.
+> Because Android's `WallpaperManager` is not available on some Android TV devices, ForkLauncher manages its own wallpapers. Changing the wallpaper requires a file explorer installed on the device.
 
 > [!TIP]
 > **Video Wallpaper Performance:** Video wallpapers are loaded into memory for smooth playback. Use compressed clips (ideally under 10MB) on lower-powered TV sticks. If you experience UI stutter, disable the backdrop blur filter in settings.
@@ -92,19 +90,19 @@ If you'd like early access to new features and want to help test upcoming releas
   </tr>
 </table>
 
-## Set Arc Launcher as default launcher
+## Set ForkLauncher as default launcher
 
 ### Method 1: Remap the Home button
 
-This is the "safer" and easiest way. Use [Button Mapper](https://play.google.com/store/apps/details?id=flar2.homebutton) to remap the Home button of the remote to launch Arc Launcher.
+This is the "safer" and easiest way. Use [Button Mapper](https://play.google.com/store/apps/details?id=flar2.homebutton) to remap the Home button of the remote to launch ForkLauncher.
 
 ### Method 2: Set Arc as the home activity over ADB
 
-This is the recommended way to make Arc Launcher your actual home screen. It is a single command, it leaves the
+This is the recommended way to make ForkLauncher your actual home screen. It is a single command, it leaves the
 stock launcher untouched, and it can be undone just as easily.
 
 ```shell
-$ adb shell cmd package set-home-activity com.omeda.arc/.MainActivity
+$ adb shell cmd package set-home-activity com.omeda.arc.local/com.omeda.arc.MainActivity
 ```
 
 This assigns Arc to the system `HOME` role, so the Home button on the remote goes straight to Arc. Nothing gets
@@ -140,20 +138,11 @@ $ adb shell cmd package set-home-activity <package>/<activity>
 
 ### Method 3: GUI tools (no command line)
 
-#### TV Box Tools (Android TV / Google TV)
-
-TV Box Tools sets Arc Launcher as the home activity without typing ADB commands manually. Pick Arc
-Launcher in the tool, and it installs the latest release and sets it as the default launcher. It runs on
-Windows, macOS, Linux, Android phones, or directly in a TV browser:
-
-- [Google Play](https://play.google.com/store/apps/details?id=com.tv.launcher.manager.adb.tvboxtools)
-- [tvboxtools.com](https://tvboxtools.com)
-
 #### Launcher Manager (Amazon Fire TV Stick / Fire OS)
 
 On Amazon Fire TV devices, standard Android launcher switching commands are restricted by Fire OS.
 Use **Launcher Manager (FireOS)** (available on [XDA Developers](https://xdaforums.com/t/app-firetv-noroot-launcher-manager-change-launcher-without-root.4176349/))
-to set Arc Launcher as your default home screen and override the stock Fire TV launcher.
+to set ForkLauncher as your default home screen and override the stock Fire TV launcher.
 
 > [!NOTE]
 > Third-party tools are not affiliated with or endorsed by this project. Review device permissions and wireless debugging access before running external management utilities.
@@ -195,7 +184,7 @@ Contributions are welcome! Please check our [Contributing Guidelines](CONTRIBUTI
 
 ## Sponsor & Support
 
-If you enjoy using Arc Launcher and would like to support its ongoing development, consider sponsoring or buying a coffee! Your support helps keep the project active and maintained.
+If you enjoy this launcher, please support the Arc Launcher author, who built most of it, by sponsoring or buying a coffee! Your support helps keep the project active and maintained.
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/meddouribadis) [![Ko-fi](https://img.shields.io/badge/Support-Ko--fi-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/omeda)
 
