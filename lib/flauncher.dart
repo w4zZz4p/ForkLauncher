@@ -24,6 +24,7 @@ import 'dart:ui' as ui;
 import 'package:collection/collection.dart';
 import 'package:flauncher/actions.dart';
 import 'package:flauncher/custom_traversal_policy.dart';
+import 'package:flauncher/flauncher_channel.dart';
 import 'package:flauncher/providers/apps_service.dart';
 import 'package:flauncher/providers/launcher_state.dart';
 import 'package:flauncher/providers/settings_service.dart';
@@ -40,6 +41,7 @@ import 'package:flauncher/widgets/wallpaper_video_background.dart';
 import 'package:flauncher/widgets/watch_next_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flauncher/l10n/app_localizations.dart';
 
@@ -66,14 +68,23 @@ class _FLauncherState extends State<FLauncher> with WidgetsBindingObserver {
   final GlobalKey _dockKey = GlobalKey();
   late final _HeroBackdropBaker _heroBackdropBaker = _HeroBackdropBaker();
 
+  final FLauncherChannel _channel = FLauncherChannel();
+
+  /// Holds focus while only the wallpaper shows, so keys reach it instead of the (hidden) app cards.
+  final FocusNode _wallpaperOnlyFocus = FocusNode(debugLabel: "wallpaperOnly", skipTraversal: true);
+  FocusNode? _focusBeforeWallpaperOnly;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _channel.setHomePressedHandler(_onHomePressed);
   }
 
   @override
   void dispose() {
+    _channel.setHomePressedHandler(null);
+    _wallpaperOnlyFocus.dispose();
     WidgetsBinding.instance.removeObserver(this);
     _scrollController.dispose();
     _heroBackdropBaker.dispose();
@@ -84,7 +95,48 @@ class _FLauncherState extends State<FLauncher> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       context.read<WatchNextService>().refreshPermissionAndItems();
+    } else if (state == AppLifecycleState.paused) {
+      // Leaving for an app (or the screensaver) always comes back to the full home screen.
+      _exitWallpaperOnly();
     }
+  }
+
+  /// Home pressed on the home screen toggles wallpaper-only mode; ignored while a dialog or settings are open.
+  void _onHomePressed() {
+    if (!mounted || !(ModalRoute.of(context)?.isCurrent ?? true)) return;
+    final launcherState = context.read<LauncherState>();
+    if (!launcherState.launcherVisible) return;
+    if (launcherState.wallpaperOnly) {
+      _exitWallpaperOnly();
+    } else {
+      _focusBeforeWallpaperOnly = FocusManager.instance.primaryFocus;
+      _wallpaperOnlyFocus.requestFocus();
+      launcherState.setWallpaperOnly(true);
+    }
+  }
+
+  void _exitWallpaperOnly() {
+    context.read<LauncherState>().setWallpaperOnly(false);
+    if (_wallpaperOnlyFocus.hasFocus) {
+      final previous = _focusBeforeWallpaperOnly;
+      if (previous != null && previous.context != null && previous.canRequestFocus) {
+        previous.requestFocus();
+      } else {
+        _wallpaperOnlyFocus.unfocus();
+      }
+    }
+    _focusBeforeWallpaperOnly = null;
+  }
+
+  /// Any key brings the UI back. Focus returns to the app cards only once the key is released,
+  /// so the same press (or its repeats) can't also open an app.
+  KeyEventResult _onWallpaperOnlyKey(FocusNode node, KeyEvent event) {
+    if (event is KeyDownEvent) {
+      context.read<LauncherState>().setWallpaperOnly(false);
+    } else if (event is KeyUpEvent) {
+      _exitWallpaperOnly();
+    }
+    return KeyEventResult.handled;
   }
 
   @override
@@ -98,6 +150,7 @@ class _FLauncherState extends State<FLauncher> with WidgetsBindingObserver {
       policy: RowByRowTraversalPolicy(),
       child: Stack(
         children: [
+          Focus(focusNode: _wallpaperOnlyFocus, onKeyEvent: _onWallpaperOnlyKey, child: const SizedBox.shrink()),
           RepaintBoundary(
             child: Consumer3<WallpaperService, SettingsService, WatchNextService>(
               builder: (_, wallpaperService, settingsService, watchNextService, __) {
@@ -191,7 +244,7 @@ class _FLauncherState extends State<FLauncher> with WidgetsBindingObserver {
           ),
           Selector3<LauncherState, SettingsService, WallpaperService, (bool, bool, bool)>(
             selector: (_, launcherState, settings, wallpaperService) => (
-              launcherState.appGridFocused,
+              launcherState.appGridFocused && !launcherState.wallpaperOnly,
               settings.backgroundBlurDisabled,
               wallpaperService.wallpaperVideoFile != null,
             ),
@@ -227,7 +280,15 @@ class _FLauncherState extends State<FLauncher> with WidgetsBindingObserver {
                 (_, state, child) => Visibility(
                   replacement: const Center(child: AlternativeLauncherView()),
                   visible: state.launcherVisible,
-                  child: child!,
+                  child: IgnorePointer(
+                    ignoring: state.wallpaperOnly,
+                    child: AnimatedOpacity(
+                      opacity: state.wallpaperOnly ? 0 : 1,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      child: child!,
+                    ),
+                  ),
                 ),
             child: Scaffold(
               backgroundColor: Colors.transparent,

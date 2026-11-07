@@ -20,6 +20,7 @@ package com.omeda.arc;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.content.pm.PackageManager;
 import android.content.pm.*;
 import android.graphics.Bitmap;
@@ -76,6 +77,9 @@ public class MainActivity extends FlutterActivity {
     private final String METHOD_CHANNEL = "me.efesser.flauncher/method";
     private final String APPS_EVENT_CHANNEL = "me.efesser.flauncher/event_apps";
     private final String NETWORK_EVENT_CHANNEL = "me.efesser.flauncher/event_network";
+    private final String HOME_CHANNEL = "me.efesser.flauncher/home";
+    private MethodChannel homeChannel;
+    private long startedAt = 0;
     private static final String PERMISSION_READ_TV_LISTINGS = "android.permission.READ_TV_LISTINGS";
     private static final int REQUEST_CODE_READ_TV_LISTINGS = 1001;
     private static final String COLUMN_ASPECT_RATIO = "aspect_ratio";
@@ -198,6 +202,28 @@ public class MainActivity extends FlutterActivity {
 
         new EventChannel(messenger, NETWORK_EVENT_CHANNEL).setStreamHandler(
                 new NetworkEventStreamHandler(this));
+
+        homeChannel = new MethodChannel(messenger, HOME_CHANNEL);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startedAt = SystemClock.uptimeMillis();
+    }
+
+    @Override
+    protected void onNewIntent(@NonNull Intent intent) {
+        // Home while another app is in front restarts the launcher just before this call; Home while the
+        // launcher has been showing for a while is reported to Flutter instead. (The system may pause the
+        // activity to deliver the intent, so the resumed state can't tell these apart.)
+        boolean wasOnScreen = SystemClock.uptimeMillis() - startedAt > 1000;
+        super.onNewIntent(intent);
+        if (wasOnScreen && homeChannel != null
+                && Intent.ACTION_MAIN.equals(intent.getAction())
+                && intent.hasCategory(Intent.CATEGORY_HOME)) {
+            homeChannel.invokeMethod("homePressed", null);
+        }
     }
 
     private List<Map<String, Serializable>> getApplications() {

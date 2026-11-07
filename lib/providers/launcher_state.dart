@@ -30,15 +30,27 @@ class LauncherState extends ChangeNotifier
   bool _isDefaultLauncher;
   bool _launcherVisible;
   bool _appGridFocused;
+  bool _wallpaperOnly = false;
 
   bool get isDefaultLauncher => _isDefaultLauncher;
   bool get launcherVisible => _launcherVisible;
   bool get appGridFocused => _appGridFocused;
 
+  /// Status bar and sections are hidden so only the wallpaper shows (toggled by pressing Home on the home screen).
+  bool get wallpaperOnly => _wallpaperOnly;
+
   LauncherState() : _isDefaultLauncher = false, _launcherVisible = true, _appGridFocused = false;
 
   void toggleLauncherVisibility() {
     _launcherVisible = !_launcherVisible;
+    notifyListeners();
+  }
+
+  void setWallpaperOnly(bool value) {
+    if (_wallpaperOnly == value) {
+      return;
+    }
+    _wallpaperOnly = value;
     notifyListeners();
   }
 

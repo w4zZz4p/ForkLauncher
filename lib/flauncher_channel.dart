@@ -24,6 +24,16 @@ class FLauncherChannel {
   static const _methodChannel = MethodChannel('me.efesser.flauncher/method');
   static const _appsEventChannel = EventChannel('me.efesser.flauncher/event_apps');
   static const _networkEventChannel = EventChannel('me.efesser.flauncher/event_network');
+  static const _homeChannel = MethodChannel('me.efesser.flauncher/home');
+
+  /// Called when Home is pressed while the launcher is already on screen.
+  void setHomePressedHandler(VoidCallback? onHomePressed) => _homeChannel.setMethodCallHandler(
+    onHomePressed == null
+        ? null
+        : (call) async {
+            if (call.method == "homePressed") onHomePressed();
+          },
+  );
 
   static const _watchNextMaxItems = 50;
 
