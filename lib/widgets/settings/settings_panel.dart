@@ -23,6 +23,7 @@ import 'package:flauncher/widgets/settings/gradient_panel_page.dart';
 import 'package:flauncher/widgets/settings/reddit_subreddits_panel_page.dart';
 import 'package:flauncher/widgets/settings/reddit_wallpaper_panel_page.dart';
 import 'package:flauncher/widgets/settings/unsplash_slideshow_panel_page.dart';
+import 'package:flauncher/widgets/settings/local_slideshow_panel_page.dart';
 import 'package:flauncher/widgets/settings/launcher_section_panel_page.dart';
 import 'package:flauncher/widgets/settings/settings_panel_page.dart';
 import 'package:flauncher/widgets/settings/status_bar_panel_page.dart';
@@ -105,6 +106,8 @@ class _SettingsPanelState extends State<SettingsPanel> {
                       return _FastPageRoute(builder: (_) => SlideshowSourcesPanelPage());
                     case UnsplashSlideshowPanelPage.routeName:
                       return _FastPageRoute(builder: (_) => UnsplashSlideshowPanelPage());
+                    case LocalSlideshowPanelPage.routeName:
+                      return _FastPageRoute(builder: (_) => LocalSlideshowPanelPage());
                     case RedditWallpaperPanelPage.routeName:
                       return _FastPageRoute(builder: (_) => const RedditWallpaperPanelPage());
                     case RedditSubredditsPanelPage.routeName:

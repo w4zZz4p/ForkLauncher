@@ -354,6 +354,7 @@ class SettingsService extends ChangeNotifier {
     await _sharedPreferences.setBool("unsplash_slideshow_enabled", enabled);
     if (enabled) {
       await _sharedPreferences.setBool("reddit_wallpaper_enabled", false);
+      await _sharedPreferences.setBool("local_slideshow_enabled", false);
     }
     notifyListeners();
   }
@@ -371,8 +372,51 @@ class SettingsService extends ChangeNotifier {
     await _sharedPreferences.setBool("reddit_wallpaper_enabled", enabled);
     if (enabled) {
       await _sharedPreferences.setBool("unsplash_slideshow_enabled", false);
+      await _sharedPreferences.setBool("local_slideshow_enabled", false);
     }
     notifyListeners();
+  }
+
+  // Local folder slideshow settings
+
+  /// The slideshow only runs once a folder is chosen.
+  bool get localSlideshowEnabled =>
+      localSlideshowFolder.isNotEmpty && (_sharedPreferences.getBool("local_slideshow_enabled") ?? false);
+
+  Future<void> setLocalSlideshowEnabled(bool enabled) async {
+    await _sharedPreferences.setBool("local_slideshow_enabled", enabled);
+    if (enabled) {
+      await _sharedPreferences.setBool("unsplash_slideshow_enabled", false);
+      await _sharedPreferences.setBool("reddit_wallpaper_enabled", false);
+    }
+    notifyListeners();
+  }
+
+  /// Absolute path of the folder whose images are shown, e.g. /storage/emulated/0/Pictures/nature_tv.
+  String get localSlideshowFolder => _sharedPreferences.getString("local_slideshow_folder") ?? "";
+
+  Future<void> setLocalSlideshowFolder(String folder) async {
+    await _sharedPreferences.setString("local_slideshow_folder", folder);
+    notifyListeners();
+  }
+
+  static const List<int> localSlideshowIntervalChoices = [1, 5, 10, 30, 60, 360, 1440];
+
+  int get localSlideshowIntervalMinutes => _sharedPreferences.getInt("local_slideshow_interval_minutes") ?? 10;
+
+  Future<void> setLocalSlideshowIntervalMinutes(int minutes) async {
+    await _sharedPreferences.setInt("local_slideshow_interval_minutes", minutes);
+    notifyListeners();
+  }
+
+  /// Image on screen, kept across restarts so a reboot does not skip to a new picture early.
+  String? get localSlideshowCurrent => _sharedPreferences.getString("local_slideshow_current");
+
+  int get localSlideshowChangedAt => _sharedPreferences.getInt("local_slideshow_changed_at") ?? 0;
+
+  Future<void> setLocalSlideshowCurrent(String path) async {
+    await _sharedPreferences.setString("local_slideshow_current", path);
+    await _sharedPreferences.setInt("local_slideshow_changed_at", DateTime.now().millisecondsSinceEpoch);
   }
 
   static const List<int> redditIntervalChoices = [5, 10, 30, 60, 360, 720, 1440];

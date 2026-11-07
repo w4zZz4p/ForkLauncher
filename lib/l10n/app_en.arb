@@ -167,6 +167,11 @@
             }
         }
     },
+    "localSlideshow": "Folder slideshow",
+    "localSlideshowEnable": "Show photos from a folder",
+    "localSlideshowFolder": "Folder",
+    "localSlideshowNoImages": "No folders with pictures found",
+    "localSlideshowNext": "Next photo now",
     "slideshowCategories": "Categories",
     "slideshowDay": "Day (6:00 - 18:00)",
     "slideshowNight": "Night (18:00 - 6:00)",

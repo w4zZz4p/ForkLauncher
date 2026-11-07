@@ -53,6 +53,9 @@ class WallpaperService extends ChangeNotifier {
   Timer? _redditDebounce;
   File? _redditFile;
 
+  Timer? _localTimer;
+  File? _localFile;
+
   static const Duration redditConfigDebounce = Duration(seconds: 3);
 
   /// Credit to display while the Reddit wallpaper is on screen.
@@ -110,7 +113,20 @@ class WallpaperService extends ChangeNotifier {
     _settingsService.redditSort,
   );
 
+  // Local slideshow settings that require restarting its timer when they change.
+  (bool, int, String) _lastLocalConfig = (false, 0, '');
+  (bool, int, String) get _localConfig => (
+    _settingsService.localSlideshowEnabled,
+    _settingsService.localSlideshowIntervalMinutes,
+    _settingsService.localSlideshowFolder,
+  );
+
   void _onSettingsChanged() {
+    if (_initialized && _localConfig != _lastLocalConfig) {
+      _lastLocalConfig = _localConfig;
+      _updateLocalState();
+      _updateWallpaper(force: true);
+    }
     final enabled = _settingsService.timeBasedWallpaperEnabled;
     if (enabled != _lastTimeBasedEnabled) {
       _lastTimeBasedEnabled = enabled;
@@ -143,6 +159,7 @@ class WallpaperService extends ChangeNotifier {
     _slideshowTimer?.cancel();
     _redditTimer?.cancel();
     _redditDebounce?.cancel();
+    _localTimer?.cancel();
     super.dispose();
   }
 
@@ -158,15 +175,73 @@ class WallpaperService extends ChangeNotifier {
     _slideshowFile = newestCachedImage(_slideshow.cacheDir);
     _redditSlideshow = RedditSlideshow(Directory("${directory.path}/reddit_slideshow"));
     _redditFile = newestCachedImage(_redditSlideshow.cacheDir);
+    final localCurrent = _settingsService.localSlideshowCurrent;
+    _localFile = localCurrent != null ? File(localCurrent) : null;
     _initialized = true;
 
     _lastTimeBasedEnabled = _settingsService.timeBasedWallpaperEnabled;
     _lastSlideshowConfig = _slideshowConfig;
     _lastRedditConfig = _redditConfig;
+    _lastLocalConfig = _localConfig;
     _updateWallpaper();
     _updateTimerState();
     _updateSlideshowState();
     _updateRedditState();
+    _updateLocalState();
+  }
+
+  void _updateLocalState() {
+    _localTimer?.cancel();
+    _localTimer = null;
+    if (!_settingsService.localSlideshowEnabled) return;
+    final interval = Duration(minutes: _settingsService.localSlideshowIntervalMinutes);
+    _localTimer = Timer.periodic(interval, (_) => advanceLocalSlideshow());
+    final file = _localFile;
+    final changedAt = DateTime.fromMillisecondsSinceEpoch(_settingsService.localSlideshowChangedAt);
+    // Reuse the current image after a reboot unless it is gone, from another folder, or due for a change.
+    if (file == null ||
+        !file.existsSync() ||
+        file.parent.path != _settingsService.localSlideshowFolder ||
+        DateTime.now().difference(changedAt) >= interval) {
+      advanceLocalSlideshow();
+    }
+  }
+
+  /// Paths of the images in [folder] (not its subfolders), from the media store.
+  Future<List<String>> _localImages(String folder) async {
+    final images = await _channel.getMediaStoreImages();
+    return images
+        .map((image) => image["path"] as String?)
+        .whereType<String>()
+        .where((path) => File(path).parent.path == folder)
+        .toList();
+  }
+
+  /// Folders that contain images, with their image count, for the folder picker.
+  Future<Map<String, int>> localImageFolders() async {
+    final images = await _channel.getMediaStoreImages();
+    final folders = <String, int>{};
+    for (final image in images) {
+      final path = image["path"] as String?;
+      if (path == null) continue;
+      final folder = File(path).parent.path;
+      folders[folder] = (folders[folder] ?? 0) + 1;
+    }
+    return folders;
+  }
+
+  /// Shows a random image of the chosen folder, never the one already on screen.
+  Future<void> advanceLocalSlideshow() async {
+    final folder = _settingsService.localSlideshowFolder;
+    if (folder.isEmpty) return;
+    final images = await _localImages(folder);
+    final current = _localFile?.path;
+    final candidates = images.length > 1 ? images.where((path) => path != current).toList() : images;
+    if (candidates.isEmpty || !_settingsService.localSlideshowEnabled) return;
+    final path = candidates[_random.nextInt(candidates.length)];
+    _localFile = File(path);
+    await _settingsService.setLocalSlideshowCurrent(path);
+    _updateWallpaper(force: true);
   }
 
   void _updateSlideshowState() {
@@ -238,6 +313,7 @@ class WallpaperService extends ChangeNotifier {
 
   File? _resolveActiveVideoFile() {
     if (!isInitialized) return null;
+    if (_settingsService.localSlideshowEnabled) return null;
     if (_settingsService.redditWallpaperEnabled) return null;
     if (_settingsService.unsplashSlideshowEnabled) return null;
 
@@ -274,7 +350,10 @@ class WallpaperService extends ChangeNotifier {
 
     final slideshowFile = _slideshowFile;
     final redditFile = _redditFile;
-    if (_settingsService.redditWallpaperEnabled && redditFile != null && redditFile.existsSync()) {
+    final localFile = _localFile;
+    if (_settingsService.localSlideshowEnabled && localFile != null && localFile.existsSync()) {
+      newWallpaper = FileImage(localFile);
+    } else if (_settingsService.redditWallpaperEnabled && redditFile != null && redditFile.existsSync()) {
       newWallpaper = FileImage(redditFile);
     } else if (_settingsService.unsplashSlideshowEnabled && slideshowFile != null && slideshowFile.existsSync()) {
       newWallpaper = FileImage(slideshowFile);

@@ -728,6 +728,36 @@ abstract class AppLocalizations {
   /// **'{minutes} min'**
   String unsplashIntervalMinutes(int minutes);
 
+  /// No description provided for @localSlideshow.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder slideshow'**
+  String get localSlideshow;
+
+  /// No description provided for @localSlideshowEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Show photos from a folder'**
+  String get localSlideshowEnable;
+
+  /// No description provided for @localSlideshowFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder'**
+  String get localSlideshowFolder;
+
+  /// No description provided for @localSlideshowNoImages.
+  ///
+  /// In en, this message translates to:
+  /// **'No folders with pictures found'**
+  String get localSlideshowNoImages;
+
+  /// No description provided for @localSlideshowNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next photo now'**
+  String get localSlideshowNext;
+
   /// No description provided for @slideshowCategories.
   ///
   /// In en, this message translates to:

@@ -349,6 +349,21 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get localSlideshow => 'Folder slideshow';
+
+  @override
+  String get localSlideshowEnable => 'Show photos from a folder';
+
+  @override
+  String get localSlideshowFolder => 'Folder';
+
+  @override
+  String get localSlideshowNoImages => 'No folders with pictures found';
+
+  @override
+  String get localSlideshowNext => 'Next photo now';
+
+  @override
   String get slideshowCategories => 'Categorías';
 
   @override
