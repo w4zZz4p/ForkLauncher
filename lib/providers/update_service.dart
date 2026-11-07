@@ -30,8 +30,8 @@ class DownloadedApk {
   const DownloadedApk({required this.path, required this.version});
 }
 
-/// ABI-split APKs are named like `arclauncher-1.0.5-arm64-v8a.apk`.
-/// Universal builds omit the ABI suffix (`arclauncher-1.0.5.apk`).
+/// ABI-split APKs are named like `forklauncher-0.1.0-arm64-v8a.apk`.
+/// Universal builds omit the ABI suffix (`forklauncher-0.1.0.apk`).
 bool isAbiSplitApk(String name) {
   return RegExp(
     r"-(arm64-v8a|armeabi-v7a|armeabi|x86_64|x86)\.apk$",
@@ -155,7 +155,7 @@ class UpdateService {
     try {
       final request = await httpClient.getUrl(uri);
       request.headers.set(HttpHeaders.acceptHeader, "application/octet-stream");
-      request.headers.set(HttpHeaders.userAgentHeader, "ArcLauncher-Updater");
+      request.headers.set(HttpHeaders.userAgentHeader, "ForkLauncher-Updater");
       final response = await request.close();
 
       if (response.statusCode != HttpStatus.ok) {
@@ -198,7 +198,7 @@ class UpdateService {
       final request = await httpClient.getUrl(uri);
       request.headers
           .set(HttpHeaders.acceptHeader, "application/vnd.github+json");
-      request.headers.set(HttpHeaders.userAgentHeader, "ArcLauncher-Updater");
+      request.headers.set(HttpHeaders.userAgentHeader, "ForkLauncher-Updater");
 
       final response = await request.close();
       if (response.statusCode != HttpStatus.ok) {

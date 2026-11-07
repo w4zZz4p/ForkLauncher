@@ -21,7 +21,7 @@ $ adb install -r build/app/outputs/flutter-apk/app-armeabi-v7a-github-release.ap
 
 Release builds are signed through `storeFile`, `storePassword`, `keyAlias` and `keyPassword` in `android/local.properties`, which git ignores. Never commit your keystore or that file.
 
-The package name is `com.omeda.arc.local`, so it installs alongside the official Arc Launcher but cannot update it, and official updates cannot update it.
+The package name is `io.github.w4zzz4p.forklauncher`, so it installs alongside the official Arc Launcher and the two never update each other.
 
 The features below come from Arc Launcher unless listed above.
 
@@ -102,10 +102,10 @@ This is the recommended way to make ForkLauncher your actual home screen. It is 
 stock launcher untouched, and it can be undone just as easily.
 
 ```shell
-$ adb shell cmd package set-home-activity com.omeda.arc.local/com.omeda.arc.MainActivity
+$ adb shell cmd package set-home-activity io.github.w4zzz4p.forklauncher/com.omeda.arc.MainActivity
 ```
 
-This assigns Arc to the system `HOME` role, so the Home button on the remote goes straight to Arc. Nothing gets
+This assigns ForkLauncher to the system `HOME` role, so the Home button on the remote goes straight to ForkLauncher. Nothing gets
 disabled, which means nothing needs to be re-enabled if you change your mind.
 
 To check which launcher is currently set as home:
@@ -178,30 +178,11 @@ $ adb shell pm enable com.google.android.tungsten.setupwraith
 
 On Chromecast with Google TV (maybe others), the "YouTube" remote button will stop working if the default launcher is disabled. As a workaround, you can use [Button Mapper](https://play.google.com/store/apps/details?id=flar2.homebutton) to remap it correctly.
 
-## Contributing
+## Credits
 
-Contributions are welcome! Please check our [Contributing Guidelines](CONTRIBUTING.md) to get started and learn about our commit conventions and Pull Request process.
-
-## Sponsor & Support
-
-If you enjoy this launcher, please support the Arc Launcher author, who built most of it, by sponsoring or buying a coffee! Your support helps keep the project active and maintained.
-
-[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ea4aaa?style=for-the-badge&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/meddouribadis) [![Ko-fi](https://img.shields.io/badge/Support-Ko--fi-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/omeda)
-
-- **GitHub Sponsors**: [github.com/sponsors/meddouribadis](https://github.com/sponsors/meddouribadis)
-- **Ko-fi**: [ko-fi.com/omeda](https://ko-fi.com/omeda)
-
-## Credits and contributors
-
-<a href="https://github.com/meddouribadis/arclauncher/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=meddouribadis/arclauncher" alt="Contributors" />
-</a>
-
-### Original Projects
+ForkLauncher builds on the work of these projects and their authors:
 
 - **[FLauncher](https://gitlab.com/flauncher/flauncher)** by [etienn01](https://github.com/etienn01) - The original project
 - **[FLauncher (Fork)](https://github.com/osrosal/flauncher)** by [osrosal](https://github.com/osrosal) - Community fork with additional features
-- **[LTvLauncher](https://github.com/LeanBitLab/LtvLauncher)** by [LeanBitLab](https://github.com/LeanBitLab) - The base for this fork
-- **[Arc Launcher](https://github.com/meddouribadis/arclauncher)** by [meddouribadis](https://github.com/meddouribadis)
-
----
+- **[LTvLauncher](https://github.com/LeanBitLab/LtvLauncher)** by [LeanBitLab](https://github.com/LeanBitLab) - The base for Arc Launcher
+- **[Arc Launcher](https://github.com/meddouribadis/arclauncher)** by [meddouribadis](https://github.com/meddouribadis) - The project ForkLauncher is forked from

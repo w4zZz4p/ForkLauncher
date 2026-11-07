@@ -64,8 +64,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.omeda.arc"
-        applicationIdSuffix ".local"
+        applicationId "io.github.w4zzz4p.forklauncher"
         compileSdk 36
         minSdkVersion flutter.minSdkVersion
         targetSdk 35
@@ -137,9 +136,9 @@ android {
         variant.outputs.all { output ->
             def abi = output.getFilter(com.android.build.OutputFile.ABI)
             if (abi != null) {
-                outputFileName = "arc-launcher-${abi}-${variant.buildType.name}.apk"
+                outputFileName = "forklauncher-${abi}-${variant.buildType.name}.apk"
             } else {
-                outputFileName = "arc-launcher-universal-${variant.buildType.name}.apk"
+                outputFileName = "forklauncher-universal-${variant.buildType.name}.apk"
             }
         }
     }

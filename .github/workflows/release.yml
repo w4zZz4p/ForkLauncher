@@ -27,7 +27,7 @@ permissions:
 
 env:
   FLUTTER_VERSION: "3.41.9"
-  RELEASE_APK_FILENAME_PREFIX: arclauncher
+  RELEASE_APK_FILENAME_PREFIX: forklauncher
   ARTIFACT_RETENTION_DAYS: 1
 
 jobs:
@@ -88,13 +88,13 @@ jobs:
             --build-number=${{ steps.meta.outputs.build_number }} \
             --build-name=${{ steps.meta.outputs.build_name }}
           mkdir -p release-apks
-          find build/app/outputs -name 'arc-launcher-universal-release.apk' -exec cp -t release-apks/ {} +
-          find build/app/outputs -name 'arc-launcher-arm64-v8a-release.apk' -exec cp -t release-apks/ {} +
-          find build/app/outputs -name 'arc-launcher-armeabi-v7a-release.apk' -exec cp -t release-apks/ {} +
+          find build/app/outputs -name 'forklauncher-universal-release.apk' -exec cp -t release-apks/ {} +
+          find build/app/outputs -name 'forklauncher-arm64-v8a-release.apk' -exec cp -t release-apks/ {} +
+          find build/app/outputs -name 'forklauncher-armeabi-v7a-release.apk' -exec cp -t release-apks/ {} +
           for apk in \
-            release-apks/arc-launcher-universal-release.apk \
-            release-apks/arc-launcher-arm64-v8a-release.apk \
-            release-apks/arc-launcher-armeabi-v7a-release.apk; do
+            release-apks/forklauncher-universal-release.apk \
+            release-apks/forklauncher-arm64-v8a-release.apk \
+            release-apks/forklauncher-armeabi-v7a-release.apk; do
             test -f "$apk" || { echo "Missing $apk"; find build/app/outputs -name '*.apk'; exit 1; }
           done
       - uses: actions/upload-artifact@v4
@@ -193,19 +193,17 @@ jobs:
           TAG: ${{ steps.meta.outputs.tag }}
         run: |
           mkdir -p dist
-          cp release-apks/arc-launcher-universal-release.apk \
+          cp release-apks/forklauncher-universal-release.apk \
             "dist/${RELEASE_APK_FILENAME_PREFIX}-${TAG}.apk"
-          # Stable alias for TV box Downloader codes (e.g. 6330120) that resolve
-          # releases/latest/download/arclauncher.apk. Shipped through 1.0.5, lost
-          # in 1.0.6 when the universal APK became version-stamped. Do not remove.
-          # See https://github.com/meddouribadis/arclauncher/issues/42
-          cp release-apks/arc-launcher-universal-release.apk \
+          # Stable alias, so releases/latest/download/forklauncher.apk always
+          # points at the newest universal APK.
+          cp release-apks/forklauncher-universal-release.apk \
             "dist/${RELEASE_APK_FILENAME_PREFIX}.apk"
-          cp release-apks/arc-launcher-arm64-v8a-release.apk \
+          cp release-apks/forklauncher-arm64-v8a-release.apk \
             "dist/${RELEASE_APK_FILENAME_PREFIX}-${TAG}-arm64-v8a.apk"
-          cp release-apks/arc-launcher-armeabi-v7a-release.apk \
+          cp release-apks/forklauncher-armeabi-v7a-release.apk \
             "dist/${RELEASE_APK_FILENAME_PREFIX}-${TAG}-armeabi-v7a.apk"
-          echo "Arc Launcher v${TAG}" > release_notes.md
+          echo "ForkLauncher v${TAG}" > release_notes.md
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.meta.outputs.tag }}

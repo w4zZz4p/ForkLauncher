@@ -235,6 +235,7 @@ class AppsService extends ChangeNotifier
     final defaultFavoriteLauncherPackageNames = [
       'com.omeda.arc',
       'com.omeda.arc.debug',
+      'io.github.w4zzz4p.forklauncher',
     ];
 
     return _database.transaction(() async {
