@@ -12,7 +12,18 @@ All credit for the launcher itself goes to Arc Launcher and the projects it is b
 
 ## Installation
 
-There are no prebuilt releases yet, so build it from source:
+Download `forklauncher-<version>-armeabi-v7a.apk` (32-bit TVs) or `-arm64-v8a.apk` from the
+[latest release](https://github.com/w4zZz4p/ForkLauncher/releases/latest) and install it, for example over ADB:
+
+```shell
+$ adb install -r forklauncher-0.1.0-armeabi-v7a.apk
+```
+
+Later versions can be installed from inside the app: Settings > Check for updates.
+
+The package name is `io.github.w4zzz4p.forklauncher`, so it installs alongside the official Arc Launcher and the two never update each other.
+
+### Building from source
 
 ```shell
 $ flutter build apk --release --flavor github --target-platform android-arm
@@ -21,7 +32,7 @@ $ adb install -r build/app/outputs/flutter-apk/app-armeabi-v7a-github-release.ap
 
 Release builds are signed through `storeFile`, `storePassword`, `keyAlias` and `keyPassword` in `android/local.properties`, which git ignores. Never commit your keystore or that file.
 
-The package name is `io.github.w4zzz4p.forklauncher`, so it installs alongside the official Arc Launcher and the two never update each other.
+Local builds leave the in-app updater off. Add `--dart-define=ENABLE_SELF_UPDATER=true` to include it, as the release builds do.
 
 The features below come from Arc Launcher unless listed above.
 
@@ -41,16 +52,16 @@ The features below come from Arc Launcher unless listed above.
 - **Video Wallpapers** - Set animated video files (MP4/WebM) as the home screen background.
 - **Slideshows** - Rotate wallpapers from custom subreddits or Unsplash categories with configurable intervals.
 - **OLED Protection** - Pitch-black theme option and screensaver with position-shifting clock to prevent burn-in.
-- **Dynamic Wallpapers** - Automatically switch wallpapers or enable dark mode based on the time of day.
+- **Time-Based Wallpaper** - Automatically switch between day and night wallpapers.
 
 ### System & Tools
 - **No Ads & No Tracking** - Completely open source with zero sponsored content or ads.
-- **In-App Updater** - Check for new releases and read changelogs directly inside the app.
+- **In-App Updater** - Check for new releases, read what changed and install them from inside the app.
 - **Sideloaded App Support** - Displays and launches non-TV Android apps without extra workarounds.
 - **Brightness Scheduler (Experimental)** - Automatically adjust brightness based on time (requires ADB `WRITE_SETTINGS` permission).
 
 > [!NOTE]
-> Because Android's `WallpaperManager` is not available on some Android TV devices, ForkLauncher manages its own wallpapers. Changing the wallpaper requires a file explorer installed on the device.
+> Because Android's `WallpaperManager` is not available on some Android TV devices, ForkLauncher manages its own wallpapers. Pictures and videos are picked from the TV's storage with a built-in picker, so no file explorer is needed.
 
 > [!TIP]
 > **Video Wallpaper Performance:** Video wallpapers are loaded into memory for smooth playback. Use compressed clips (ideally under 10MB) on lower-powered TV sticks. If you experience UI stutter, disable the backdrop blur filter in settings.
@@ -59,34 +70,28 @@ The features below come from Arc Launcher unless listed above.
 
 <table>
   <tr>
-    <td align="center">Settings panel</td>
-    <td align="center">Accent colors</td>
-    <td align="center">Multiple wallpapers</td>
+    <td align="center">Home: the dock over the wallpaper</td>
+    <td align="center">Press Down for the other sections</td>
   </tr>
   <tr>
-    <td><img src="docs/images/screen_settings1.png" width="100%" alt="Settings screen 1"/></td>
-    <td><img src="docs/images/screen_settings2.png" width="100%" alt="Settings screen 2"/></td>
-    <td><img src="docs/images/screen_settings3.png" width="100%" alt="Settings screen 3"/></td>
+    <td><img src="docs/images/home.jpg" width="100%" alt="Home screen with the dock at the bottom"/></td>
+    <td><img src="docs/images/sections.jpg" width="100%" alt="Sections shown below the dock"/></td>
   </tr>
   <tr>
-    <td align="center">Backdrop blur</td>
-    <td align="center">Without blur</td>
-    <td align="center">Custom banner</td>
+    <td align="center">Home again: wallpaper only</td>
+    <td align="center">Settings</td>
   </tr>
   <tr>
-    <td><img src="docs/images/screen_settings4.png" width="100%" alt="Settings screen 4"/></td>
-    <td><img src="docs/images/screen_settings5.png" width="100%" alt="Settings screen 5"/></td>
-    <td><img src="docs/images/screen_settings6.png" width="100%" alt="Settings screen 6"/></td>
+    <td><img src="docs/images/wallpaper_only.jpg" width="100%" alt="Wallpaper-only view"/></td>
+    <td><img src="docs/images/settings.jpg" width="100%" alt="Settings panel"/></td>
   </tr>
   <tr>
-    <td align="center">Home</td>
-    <td align="center">Wallpaper Options</td>
-    <td align="center">Watch Next</td>
+    <td align="center">Wallpaper sources</td>
+    <td align="center">Folder slideshow</td>
   </tr>
   <tr>
-    <td><img src="docs/images/home2.png" width="100%" alt="Another home page"/></td>
-    <td><img src="docs/images/wallpapers_options.png" width="100%" alt="Different wallpaper options"/></td>
-    <td><img src="docs/images/watch_next.png" width="100%" alt="Watch next section"/></td>
+    <td><img src="docs/images/wallpaper_settings.jpg" width="100%" alt="Wallpaper settings"/></td>
+    <td><img src="docs/images/folder_slideshow.jpg" width="100%" alt="Folder slideshow settings"/></td>
   </tr>
 </table>
 
@@ -96,7 +101,7 @@ The features below come from Arc Launcher unless listed above.
 
 This is the "safer" and easiest way. Use [Button Mapper](https://play.google.com/store/apps/details?id=flar2.homebutton) to remap the Home button of the remote to launch ForkLauncher.
 
-### Method 2: Set Arc as the home activity over ADB
+### Method 2: Set ForkLauncher as the home activity over ADB
 
 This is the recommended way to make ForkLauncher your actual home screen. It is a single command, it leaves the
 stock launcher untouched, and it can be undone just as easily.
