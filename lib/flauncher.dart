@@ -322,6 +322,16 @@ class _FLauncherState extends State<FLauncher> with WidgetsBindingObserver {
                 ),
               ),
             ),
+          // Keep the other sections below the screen edge until focus moves down into them,
+          // so only the dock shows over the wallpaper.
+          if (favoriteApps.isNotEmpty && otherSections.isNotEmpty)
+            SliverLayoutBuilder(
+              builder: (context, constraints) => SliverToBoxAdapter(
+                child: SizedBox(
+                  height: max(0.0, constraints.viewportMainAxisExtent - constraints.precedingScrollExtent),
+                ),
+              ),
+            ),
         ],
         ..._buildSectionSlivers(
           otherSections,
