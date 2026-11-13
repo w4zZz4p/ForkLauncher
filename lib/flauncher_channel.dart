@@ -171,6 +171,32 @@ class FLauncherChannel {
         listener(eventMap.cast<String, dynamic>());
       });
 
+  // Remote button overrides (ButtonOverrideService)
+  Future<bool> isButtonOverrideServiceEnabled() async =>
+      await _methodChannel.invokeMethod<bool>('isButtonOverrideServiceEnabled') ?? false;
+
+  Future<void> openAccessibilitySettings() async => await _methodChannel.invokeMethod('openAccessibilitySettings');
+
+  Future<List<Map<String, dynamic>>> getButtonOverrides() async {
+    final list = await _methodChannel.invokeListMethod<Map<dynamic, dynamic>>('getButtonOverrides');
+    return list?.map((e) => e.cast<String, dynamic>()).toList() ?? [];
+  }
+
+  /// An empty [packageName] makes the button do nothing.
+  Future<void> setButtonOverride(int keyCode, String packageName) async =>
+      await _methodChannel.invokeMethod('setButtonOverride', {'keyCode': keyCode, 'packageName': packageName});
+
+  Future<void> removeButtonOverride(int keyCode) async => await _methodChannel.invokeMethod('removeButtonOverride', keyCode);
+
+  /// Waits for the next remote button and returns its key code, or null if the capture was cancelled
+  /// or the accessibility service isn't running.
+  Future<int?> captureButton() async {
+    final code = await _methodChannel.invokeMethod<int>('captureButton');
+    return code == null || code < 0 ? null : code;
+  }
+
+  Future<void> cancelButtonCapture() async => await _methodChannel.invokeMethod('cancelButtonCapture');
+
   // Watch Next / TV Channels API
   Future<bool> checkWatchNextPermission() async =>
       await _methodChannel.invokeMethod('checkWatchNextPermission') ?? false;

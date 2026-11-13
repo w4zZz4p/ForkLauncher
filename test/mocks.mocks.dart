@@ -681,6 +681,86 @@ class MockFLauncherChannel extends _i1.Mock implements _i12.FLauncherChannel {
       );
 
   @override
+  _i9.Future<bool> isButtonOverrideServiceEnabled() => (super.noSuchMethod(
+        Invocation.method(
+          #isButtonOverrideServiceEnabled,
+          [],
+        ),
+        returnValue: _i9.Future<bool>.value(false),
+        returnValueForMissingStub: _i9.Future<bool>.value(false),
+      ) as _i9.Future<bool>);
+
+  @override
+  _i9.Future<void> openAccessibilitySettings() => (super.noSuchMethod(
+        Invocation.method(
+          #openAccessibilitySettings,
+          [],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
+  _i9.Future<List<Map<String, dynamic>>> getButtonOverrides() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getButtonOverrides,
+          [],
+        ),
+        returnValue: _i9.Future<List<Map<String, dynamic>>>.value(
+            <Map<String, dynamic>>[]),
+        returnValueForMissingStub: _i9.Future<List<Map<String, dynamic>>>.value(
+            <Map<String, dynamic>>[]),
+      ) as _i9.Future<List<Map<String, dynamic>>>);
+
+  @override
+  _i9.Future<void> setButtonOverride(
+    int? keyCode,
+    String? packageName,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setButtonOverride,
+          [
+            keyCode,
+            packageName,
+          ],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
+  _i9.Future<void> removeButtonOverride(int? keyCode) => (super.noSuchMethod(
+        Invocation.method(
+          #removeButtonOverride,
+          [keyCode],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
+  _i9.Future<int?> captureButton() => (super.noSuchMethod(
+        Invocation.method(
+          #captureButton,
+          [],
+        ),
+        returnValue: _i9.Future<int?>.value(),
+        returnValueForMissingStub: _i9.Future<int?>.value(),
+      ) as _i9.Future<int?>);
+
+  @override
+  _i9.Future<void> cancelButtonCapture() => (super.noSuchMethod(
+        Invocation.method(
+          #cancelButtonCapture,
+          [],
+        ),
+        returnValue: _i9.Future<void>.value(),
+        returnValueForMissingStub: _i9.Future<void>.value(),
+      ) as _i9.Future<void>);
+
+  @override
   _i9.Future<bool> checkWatchNextPermission() => (super.noSuchMethod(
         Invocation.method(
           #checkWatchNextPermission,

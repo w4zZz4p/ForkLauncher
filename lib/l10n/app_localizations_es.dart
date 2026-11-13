@@ -467,6 +467,42 @@ class AppLocalizationsEs extends AppLocalizations {
   String get checkStatus => 'Comprobar estado';
 
   @override
+  String get remoteButtons => 'Botones del mando';
+
+  @override
+  String get remoteButtonsServiceOff =>
+      'Para cambiar lo que hacen los botones del mando, activa \"ForkLauncher remote buttons\" en los ajustes de accesibilidad del televisor, o ejecuta esto por ADB:';
+
+  @override
+  String get openAccessibilitySettings => 'Abrir ajustes de accesibilidad';
+
+  @override
+  String get addRemoteButton => 'Añadir un botón';
+
+  @override
+  String get pressRemoteButton =>
+      'Pulsa el botón del mando que quieres cambiar.\nAtrás cancela.';
+
+  @override
+  String get remoteButtonOpens => 'El botón abre';
+
+  @override
+  String get remoteButtonDoNothing => 'No hacer nada';
+
+  @override
+  String get removeRemoteButton =>
+      'Quitar, volver a lo predeterminado del televisor';
+
+  @override
+  String remoteButtonNumber(int keyCode) {
+    return 'Botón $keyCode';
+  }
+
+  @override
+  String get remoteButtonsHelp =>
+      'El televisor gestiona algunos botones antes que cualquier aplicación, así que cambiarlos no tiene efecto.';
+
+  @override
   String get watchNextBigPictureMode => 'Modo inmersivo';
 
   @override

@@ -463,6 +463,41 @@ class AppLocalizationsTr extends AppLocalizations {
   String get checkStatus => 'Durumu denetle';
 
   @override
+  String get remoteButtons => 'Kumanda tuşları';
+
+  @override
+  String get remoteButtonsServiceOff =>
+      'Kumanda tuşlarının ne yaptığını değiştirmek için TV\'nin erişilebilirlik ayarlarında \"ForkLauncher remote buttons\" seçeneğini açın veya bunu ADB ile çalıştırın:';
+
+  @override
+  String get openAccessibilitySettings => 'Erişilebilirlik ayarlarını aç';
+
+  @override
+  String get addRemoteButton => 'Tuş ekle';
+
+  @override
+  String get pressRemoteButton =>
+      'Değiştirmek istediğiniz kumanda tuşuna basın.\nGeri iptal eder.';
+
+  @override
+  String get remoteButtonOpens => 'Tuşun açtığı';
+
+  @override
+  String get remoteButtonDoNothing => 'Hiçbir şey yapma';
+
+  @override
+  String get removeRemoteButton => 'Kaldır, TV\'nin varsayılanına dön';
+
+  @override
+  String remoteButtonNumber(int keyCode) {
+    return 'Tuş $keyCode';
+  }
+
+  @override
+  String get remoteButtonsHelp =>
+      'Bazı tuşları TV, herhangi bir uygulamadan önce işler; bunları değiştirmenin etkisi olmaz.';
+
+  @override
   String get watchNextBigPictureMode => 'Sürükleyici mod';
 
   @override

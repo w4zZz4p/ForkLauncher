@@ -463,6 +463,41 @@ class AppLocalizationsVi extends AppLocalizations {
   String get checkStatus => 'Kiểm tra trạng thái';
 
   @override
+  String get remoteButtons => 'Nút điều khiển';
+
+  @override
+  String get remoteButtonsServiceOff =>
+      'Để thay đổi chức năng các nút điều khiển, hãy bật \"ForkLauncher remote buttons\" trong cài đặt hỗ trợ tiếp cận của TV, hoặc chạy lệnh này qua ADB:';
+
+  @override
+  String get openAccessibilitySettings => 'Mở cài đặt hỗ trợ tiếp cận';
+
+  @override
+  String get addRemoteButton => 'Thêm nút';
+
+  @override
+  String get pressRemoteButton =>
+      'Nhấn nút điều khiển bạn muốn thay đổi.\nNút Quay lại để hủy.';
+
+  @override
+  String get remoteButtonOpens => 'Nút sẽ mở';
+
+  @override
+  String get remoteButtonDoNothing => 'Không làm gì';
+
+  @override
+  String get removeRemoteButton => 'Xóa, trở về mặc định của TV';
+
+  @override
+  String remoteButtonNumber(int keyCode) {
+    return 'Nút $keyCode';
+  }
+
+  @override
+  String get remoteButtonsHelp =>
+      'TV xử lý một số nút trước mọi ứng dụng, nên thay đổi chúng sẽ không có tác dụng.';
+
+  @override
   String get watchNextBigPictureMode => 'Chế độ chìm đắm';
 
   @override

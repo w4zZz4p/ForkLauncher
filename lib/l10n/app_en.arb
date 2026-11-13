@@ -212,6 +212,23 @@
     "monthly": "Monthly",
     "grantPermission": "Grant Permission",
     "checkStatus": "Check Status",
+    "remoteButtons": "Remote buttons",
+    "remoteButtonsServiceOff": "To change what remote buttons do, turn on \"ForkLauncher remote buttons\" in the TV's accessibility settings, or run this over ADB:",
+    "openAccessibilitySettings": "Open accessibility settings",
+    "addRemoteButton": "Add a button",
+    "pressRemoteButton": "Press the remote button you want to change.\nBack cancels.",
+    "remoteButtonOpens": "The button opens",
+    "remoteButtonDoNothing": "Do nothing",
+    "removeRemoteButton": "Remove, back to the TV's default",
+    "remoteButtonNumber": "Button {keyCode}",
+    "remoteButtonsHelp": "Some buttons are handled by the TV before any app sees them, so changing them has no effect.",
+    "@remoteButtonNumber": {
+        "placeholders": {
+            "keyCode": {
+                "type": "int"
+            }
+        }
+    },
     "watchNextBigPictureMode": "Immersive mode",
     "watchNextBigPictureModeDescription": "Show full-width hero backdrop with an action watch button",
     "watchNextWatch": "Watch",

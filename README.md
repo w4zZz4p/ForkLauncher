@@ -9,6 +9,7 @@ All credit for the launcher itself goes to Arc Launcher and the projects it is b
 - **Folder slideshow** - Random wallpaper from a folder on the TV, changed on a timer you choose, with no internet needed (Interface > Wallpaper > Folder slideshow).
 - **Wallpaper-only view** - Press Home while already on the home screen to hide the status bar and every section. Any other key brings them back without opening an app.
 - **Clean home screen** - Sections stay below the screen edge until you press Down from the dock.
+- **Remote buttons** - Choose which app a remote button opens, or make it do nothing (System > Remote buttons). Needs the "ForkLauncher remote buttons" accessibility service turned on. Buttons the TV handles itself before any app, such as Disney+ and Prime Video on TCL TVs, can't be changed.
 
 ## Installation
 

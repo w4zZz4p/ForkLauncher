@@ -461,6 +461,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkStatus => 'Check Status';
 
   @override
+  String get remoteButtons => 'Remote buttons';
+
+  @override
+  String get remoteButtonsServiceOff =>
+      'To change what remote buttons do, turn on \"ForkLauncher remote buttons\" in the TV\'s accessibility settings, or run this over ADB:';
+
+  @override
+  String get openAccessibilitySettings => 'Open accessibility settings';
+
+  @override
+  String get addRemoteButton => 'Add a button';
+
+  @override
+  String get pressRemoteButton =>
+      'Press the remote button you want to change.\nBack cancels.';
+
+  @override
+  String get remoteButtonOpens => 'The button opens';
+
+  @override
+  String get remoteButtonDoNothing => 'Do nothing';
+
+  @override
+  String get removeRemoteButton => 'Remove, back to the TV\'s default';
+
+  @override
+  String remoteButtonNumber(int keyCode) {
+    return 'Button $keyCode';
+  }
+
+  @override
+  String get remoteButtonsHelp =>
+      'Some buttons are handled by the TV before any app sees them, so changing them has no effect.';
+
+  @override
   String get watchNextBigPictureMode => 'Immersive mode';
 
   @override

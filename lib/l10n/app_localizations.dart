@@ -956,6 +956,66 @@ abstract class AppLocalizations {
   /// **'Check Status'**
   String get checkStatus;
 
+  /// No description provided for @remoteButtons.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote buttons'**
+  String get remoteButtons;
+
+  /// No description provided for @remoteButtonsServiceOff.
+  ///
+  /// In en, this message translates to:
+  /// **'To change what remote buttons do, turn on \"ForkLauncher remote buttons\" in the TV\'s accessibility settings, or run this over ADB:'**
+  String get remoteButtonsServiceOff;
+
+  /// No description provided for @openAccessibilitySettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open accessibility settings'**
+  String get openAccessibilitySettings;
+
+  /// No description provided for @addRemoteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a button'**
+  String get addRemoteButton;
+
+  /// No description provided for @pressRemoteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Press the remote button you want to change.\nBack cancels.'**
+  String get pressRemoteButton;
+
+  /// No description provided for @remoteButtonOpens.
+  ///
+  /// In en, this message translates to:
+  /// **'The button opens'**
+  String get remoteButtonOpens;
+
+  /// No description provided for @remoteButtonDoNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Do nothing'**
+  String get remoteButtonDoNothing;
+
+  /// No description provided for @removeRemoteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove, back to the TV\'s default'**
+  String get removeRemoteButton;
+
+  /// No description provided for @remoteButtonNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Button {keyCode}'**
+  String remoteButtonNumber(int keyCode);
+
+  /// No description provided for @remoteButtonsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Some buttons are handled by the TV before any app sees them, so changing them has no effect.'**
+  String get remoteButtonsHelp;
+
   /// No description provided for @watchNextBigPictureMode.
   ///
   /// In en, this message translates to:

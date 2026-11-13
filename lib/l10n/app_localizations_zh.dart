@@ -456,6 +456,39 @@ class AppLocalizationsZh extends AppLocalizations {
   String get checkStatus => '检查状态';
 
   @override
+  String get remoteButtons => '遥控器按键';
+
+  @override
+  String get remoteButtonsServiceOff =>
+      '要更改遥控器按键的功能，请在电视的无障碍设置中开启“ForkLauncher remote buttons”，或通过 ADB 运行：';
+
+  @override
+  String get openAccessibilitySettings => '打开无障碍设置';
+
+  @override
+  String get addRemoteButton => '添加按键';
+
+  @override
+  String get pressRemoteButton => '按下要更改的遥控器按键。\n按返回键取消。';
+
+  @override
+  String get remoteButtonOpens => '按键打开';
+
+  @override
+  String get remoteButtonDoNothing => '不执行任何操作';
+
+  @override
+  String get removeRemoteButton => '移除，恢复电视默认';
+
+  @override
+  String remoteButtonNumber(int keyCode) {
+    return '按键 $keyCode';
+  }
+
+  @override
+  String get remoteButtonsHelp => '部分按键在任何应用之前由电视处理，因此更改无效。';
+
+  @override
   String get watchNextBigPictureMode => '沉浸模式';
 
   @override

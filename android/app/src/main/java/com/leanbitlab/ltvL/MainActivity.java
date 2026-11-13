@@ -184,6 +184,26 @@ public class MainActivity extends FlutterActivity {
                         result.success(false);
                     }
                 }
+                case "isButtonOverrideServiceEnabled" -> result.success(ButtonOverrideService.isEnabled(this));
+                case "openAccessibilitySettings" -> result.success(launchActivityFromAction(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+                case "getButtonOverrides" -> result.success(ButtonOverrideService.getOverrides(this));
+                case "setButtonOverride" -> {
+                    ButtonOverrideService.setOverride(this, call.argument("keyCode"), call.argument("packageName"));
+                    result.success(null);
+                }
+                case "removeButtonOverride" -> {
+                    ButtonOverrideService.removeOverride(this, (Integer) call.arguments());
+                    result.success(null);
+                }
+                case "captureButton" -> {
+                    if (!ButtonOverrideService.captureNextButton(result::success)) {
+                        result.success(null);
+                    }
+                }
+                case "cancelButtonCapture" -> {
+                    ButtonOverrideService.cancelCapture();
+                    result.success(null);
+                }
                 case "loadContentUriImage" -> {
                     String contentUri = (String) call.arguments();
                     if (contentUri != null) {

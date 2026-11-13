@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="button_override_service_label">ForkLauncher remote buttons</string>
+    <string name="button_override_service_description">Lets ForkLauncher open the app you chose when you press a remote button. Set the buttons in ForkLauncher\'s settings. Other key presses are passed on unchanged and never stored or sent anywhere.</string>
+</resources>

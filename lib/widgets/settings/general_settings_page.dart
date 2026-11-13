@@ -24,6 +24,7 @@ import 'focusable_settings_tile.dart';
 import 'brightness_settings_page.dart';
 import 'date_time_format_page.dart';
 import 'back_button_action_page.dart';
+import 'remote_buttons_page.dart';
 import 'wifi_usage_period_page.dart';
 import 'screensaver_clock_style_page.dart';
 
@@ -74,6 +75,12 @@ class GeneralSettingsPage extends StatelessWidget {
                   leading: const Icon(Icons.arrow_back),
                   title: Text(localizations.backButtonAction, style: Theme.of(context).textTheme.bodyMedium),
                   onPressed: () => Navigator.of(context).pushNamed(BackButtonActionPage.routeName),
+                ),
+                FocusableSettingsTile(
+                  showChevron: true,
+                  leading: const Icon(Icons.settings_remote),
+                  title: Text(localizations.remoteButtons, style: Theme.of(context).textTheme.bodyMedium),
+                  onPressed: () => Navigator.of(context).pushNamed(RemoteButtonsPage.routeName),
                 ),
                 FocusableSettingsTile(
                   showChevron: true,
