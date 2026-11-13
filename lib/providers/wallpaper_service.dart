@@ -54,9 +54,19 @@ class WallpaperService extends ChangeNotifier {
   File? _redditFile;
 
   Timer? _localTimer;
+  Timer? _localRetryTimer;
+  int _localRetries = 0;
+  int _localGeneration = 0;
+  Timer? _loadRetryTimer;
+  int _loadRetries = 0;
   File? _localFile;
 
   static const Duration redditConfigDebounce = Duration(seconds: 3);
+  // Right after a boot the launcher can start before shared storage is mounted and
+  // the media store is ready, so the folder slideshow, and loading the wallpaper
+  // image itself, retry for about two minutes.
+  static const Duration localRetryDelay = Duration(seconds: 5);
+  static const int localMaxRetries = 24;
 
   /// Credit to display while the Reddit wallpaper is on screen.
   String? get redditWallpaperCredit {
@@ -160,6 +170,8 @@ class WallpaperService extends ChangeNotifier {
     _redditTimer?.cancel();
     _redditDebounce?.cancel();
     _localTimer?.cancel();
+    _localRetryTimer?.cancel();
+    _loadRetryTimer?.cancel();
     super.dispose();
   }
 
@@ -193,18 +205,52 @@ class WallpaperService extends ChangeNotifier {
   void _updateLocalState() {
     _localTimer?.cancel();
     _localTimer = null;
+    _localRetryTimer?.cancel();
+    _localRetryTimer = null;
+    _localRetries = 0;
+    _localGeneration++;
     if (!_settingsService.localSlideshowEnabled) return;
     final interval = Duration(minutes: _settingsService.localSlideshowIntervalMinutes);
     _localTimer = Timer.periodic(interval, (_) => advanceLocalSlideshow());
+    _showLocalImage(_localGeneration);
+  }
+
+  bool get _localImageUsable {
     final file = _localFile;
+    return file != null && file.existsSync() && file.parent.path == _settingsService.localSlideshowFolder;
+  }
+
+  /// Shows the folder slideshow's image, retrying while storage is not ready yet.
+  Future<void> _showLocalImage(int generation) async {
+    final interval = Duration(minutes: _settingsService.localSlideshowIntervalMinutes);
     final changedAt = DateTime.fromMillisecondsSinceEpoch(_settingsService.localSlideshowChangedAt);
     // Reuse the current image after a reboot unless it is gone, from another folder, or due for a change.
-    if (file == null ||
-        !file.existsSync() ||
-        file.parent.path != _settingsService.localSlideshowFolder ||
-        DateTime.now().difference(changedAt) >= interval) {
-      advanceLocalSlideshow();
+    if (_localImageUsable && DateTime.now().difference(changedAt) < interval) {
+      if (_localRetries > 0) _updateWallpaper(force: true);
+    } else {
+      try {
+        await advanceLocalSlideshow();
+      } catch (_) {
+        // The media store may not answer yet; retried below.
+      }
     }
+    if (generation != _localGeneration || !_settingsService.localSlideshowEnabled) return;
+    if (_localImageUsable || _localRetries >= localMaxRetries) return;
+    _localRetries++;
+    _localRetryTimer = Timer(localRetryDelay, () => _showLocalImage(generation));
+  }
+
+  /// Called when [provider], the image on screen, failed to load. Flutter's image cache
+  /// keeps the failed result, so it is evicted before the next try.
+  void wallpaperLoadFailed(ImageProvider provider) {
+    if (_loadRetryTimer?.isActive ?? false) return;
+    if (_loadRetries >= localMaxRetries) return;
+    _loadRetries++;
+    _loadRetryTimer = Timer(localRetryDelay, () async {
+      await provider.evict();
+      _wallpaperRevision++;
+      notifyListeners();
+    });
   }
 
   /// Paths of the images in [folder] (not its subfolders), from the media store.
@@ -372,6 +418,7 @@ class WallpaperService extends ChangeNotifier {
     }
 
     if (_wallpaper != newWallpaper || videoFile != null || force) {
+      if (_wallpaper != newWallpaper) _loadRetries = 0;
       _wallpaper = newWallpaper;
       _wallpaperRevision++;
       notifyListeners();

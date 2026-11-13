@@ -21,6 +21,7 @@ import 'dart:typed_data';
 
 import 'package:flauncher/gradients.dart';
 import 'package:flauncher/providers/wallpaper_service.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -114,6 +115,57 @@ void main() {
     await wallpaperService.pickWallpaperFromUri('content://media/external/images/media/1');
 
     expect(await File('./wallpaper').readAsBytes(), [0x03, 0x04]);
+  });
+
+  test("folder slideshow retries until the media store lists the folder after a boot", () async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final folder = Directory("./test_local_slideshow");
+    await folder.create();
+    final image = File("${folder.path}/a.jpg");
+    await image.writeAsBytes([0x01]);
+    addTearDown(() => folder.delete(recursive: true));
+
+    var calls = 0;
+    const channel = MethodChannel('me.efesser.flauncher/method');
+    final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(channel, (call) async {
+      if (call.method == 'getMediaStoreImages') {
+        // Storage is not mounted yet on the first query.
+        return calls++ == 0 ? <Map<String, dynamic>>[] : [{"path": image.path}];
+      }
+      return null;
+    });
+    addTearDown(() => messenger.setMockMethodCallHandler(channel, null));
+
+    final settingsService = _createSettingsService();
+    when(settingsService.localSlideshowEnabled).thenReturn(true);
+    when(settingsService.localSlideshowFolder).thenReturn(folder.path);
+    when(settingsService.localSlideshowChangedAt).thenReturn(0);
+    when(settingsService.setLocalSlideshowCurrent(any)).thenAnswer((_) async {});
+    final wallpaperService = WallpaperService(settingsService);
+    addTearDown(wallpaperService.dispose);
+    await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
+    await Future.delayed(const Duration(milliseconds: 200));
+    expect(wallpaperService.wallpaper, isNull);
+
+    await Future.delayed(WallpaperService.localRetryDelay + const Duration(milliseconds: 500));
+
+    expect(calls, 2);
+    expect((wallpaperService.wallpaper as FileImage).file.path, image.path);
+  });
+
+  test("wallpaperLoadFailed evicts the image and redraws it after a delay", () async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final wallpaperService = WallpaperService(_createSettingsService());
+    addTearDown(wallpaperService.dispose);
+    await untilCalled(pathProviderPlatform.getApplicationDocumentsPath());
+    final revision = wallpaperService.wallpaperRevision;
+
+    wallpaperService.wallpaperLoadFailed(FileImage(File("missing.jpg")));
+    wallpaperService.wallpaperLoadFailed(FileImage(File("missing.jpg")));
+    await Future.delayed(WallpaperService.localRetryDelay + const Duration(milliseconds: 500));
+
+    expect(wallpaperService.wallpaperRevision, revision + 1);
   });
 
   test("setGradient", () async {

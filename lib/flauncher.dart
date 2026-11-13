@@ -691,12 +691,19 @@ class _FLauncherState extends State<FLauncher> with WidgetsBindingObserver {
       );
     }
     if (wallpaperService.wallpaper != null) {
+      final image = ResizeImage(wallpaperService.wallpaper!, height: (screenSize.height * dpr).round());
       return Image(
-        image: ResizeImage(wallpaperService.wallpaper!, height: (screenSize.height * dpr).round()),
+        image: image,
         key: ValueKey("background_${wallpaperService.wallpaperRevision}"),
         fit: BoxFit.cover,
         height: screenSize.height,
         width: screenSize.width,
+        // Right after a boot the file can be unreadable for a few seconds; show the
+        // gradient meanwhile and try again.
+        errorBuilder: (context, error, stackTrace) {
+          wallpaperService.wallpaperLoadFailed(image);
+          return _CachedGradientBackground(gradient: wallpaperService.gradient.gradient);
+        },
       );
     } else {
       return _CachedGradientBackground(key: const Key("background"), gradient: wallpaperService.gradient.gradient);
